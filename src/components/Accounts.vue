@@ -15,17 +15,17 @@
       </div>
       <div class="row mt-1" v-for="(account,index) in accountStore.accounts" :key="index">
         <div class="col-3">
-          <InputText v-model="account.label" autofocus fluid style="height: 50px"/>
+          <InputText v-model="account.label" maxlength="50" autofocus fluid style="height: 50px"/>
         </div>
         <div class="col-3">
           <Select v-model="account.accountType" placeholder="Select Account Type" style="height: 50px" :options="accountTypes" autofocus fluid />
         </div>
         <div :class="account.accountType === 'LDAP'? 'col-6' : 'col-3'">
-          <InputText v-model="account.login" autofocus fluid style="height: 50px" />
+          <InputText v-model="account.login"  maxlength="100" autofocus fluid style="height: 50px" />
         </div>
 
         <div class="col-3" v-if="account.accountType !== 'LDAP'">
-            <Password v-model="value" toggleMask autofocus fluid style="height:50px"/>
+            <Password v-model="value" :required="account.accountType==='Локальная'" toggleMask autofocus fluid style="height:50px"/>
         </div>
       </div>
     </div>

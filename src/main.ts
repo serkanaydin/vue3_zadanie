@@ -13,9 +13,11 @@ import './assets/main.css';
 import {InputText} from "primevue";
 import Select from "primevue/select";
 import {Password} from "primevue";
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App);
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
 app.use(PrimeVue, {
     theme: {

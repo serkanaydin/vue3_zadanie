@@ -18,5 +18,6 @@ export const useAccountsStore = defineStore('accounts', {
         remove(account: IAccount) {
             this.accounts = this.accounts.filter(acc => acc !== account);
         },
-    }
+    },
+    persist:true
 });
