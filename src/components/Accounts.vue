@@ -27,7 +27,7 @@
           <Select
               :ref="(el:any) => registerRef(index, 'accountType',el)"
               :value="account.accountType"
-              @input="onInput(account,index,'accountType',$event)"
+              @change="onInput(account,index,'accountType',$event)"
               placeholder="Select Account Type"
               style="height: 50px"
               :options="accountTypes"
@@ -83,7 +83,6 @@ const accountStore = useAccountsStore();
   }
 
   const joinedLabel = ((label:LabelElement[]) =>{
-        console.log(label)
         return label.map(x=> x.text).join(';');
       }
   )
@@ -95,8 +94,8 @@ const accountStore = useAccountsStore();
   };
 
 
-  function convertLabel(value:string){
-    var result = value.split(';');
+  function convertLabelToLabelElements(label:string){
+    var result = label.split(';');
     return result.map(item=>  ({text : item} as LabelElement));
   }
 
@@ -107,11 +106,10 @@ const accountStore = useAccountsStore();
                               value: string ){
     if(validationResult){
       if(field==='label'){
-        account[`${field}`]= convertLabel(value);
-        console.log(convertLabel(value))
+        accountStore.mutate(account, field, convertLabelToLabelElements(value));
       }
       else{
-        account[`${field}`]= value;
+        accountStore.mutate(account, field,value);
       }
       el.$el.classList.remove('border-danger');
     }
@@ -124,20 +122,30 @@ const accountStore = useAccountsStore();
                    index:number,
                    field:string,
                    event:any){
-    event.stopPropagation();
         const inputRef = `${index}${field}`;
         const el = inputRefs.value[inputRef];
         let validationResult:boolean=false;
+        let value:any;
         switch (field){
-          case 'label': validationResult = event.target.value.length <= 50; break;
-          case 'login': validationResult = event.target.value.length <= 100; break;
-          case 'password': validationResult = event.target.value.length <= 100; break;
+          case 'label':
+            value= event.target.value;
+            validationResult = value.length <= 50;
+            break;
+          case 'login':
+            value= event.target.value;
+            validationResult = value.length <= 100;
+            break;
+          case 'password':
+            value= event.target.value;
+            validationResult = value.length <= 100; break;
+          case 'accountType':
+            value = event.value;
+            validationResult = true; break;
         }
-        completeValidation(account,el,field,validationResult,event.target.value);
+        completeValidation(account,el,field,validationResult,value);
   }
 
 </script>
 
 <style scoped>
-
 </style>
