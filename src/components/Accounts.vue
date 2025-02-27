@@ -79,7 +79,11 @@ const inputRefs = ref({});
 
 //region Account Adding and Deletion
   function onClickAdd (){
-    let newAccount: IAccount = {label:[] as LabelElement[] ,accountType:"",login:"",password:""} as IAccount;
+    let newAccount: IAccount = {
+      label:null ,
+      accountType:null,
+      login:null,
+      password:null} as IAccount;
     accountStore.add(newAccount);
   }
 
@@ -100,7 +104,12 @@ const inputRefs = ref({});
 
 //region Label formatting
   const joinedLabel = ((label:LabelElement[]) =>{
+      if(label !== null){
       return label.map(x=> x.text).join(';');
+      }
+      else{
+        return null;
+      }
     }
   )
   function convertLabelToLabelElements(label:string){
