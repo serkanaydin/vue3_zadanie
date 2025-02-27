@@ -5,6 +5,7 @@
       <Button @click="onClickAdd()" icon="bi bi-plus" class="ms-2"/>
     </template>
   </Toolbar>
+
   <div class="m-5">
     <div class="container" style="width: 800px">
       <div class="row">
@@ -64,41 +65,51 @@
 
 <script setup lang="ts">
 
+//region Imports
 import {IAccount, LabelElement, useAccountsStore} from '@/store/accounts';
-import {computed, ref} from "vue";
+import {ref} from "vue";
+//endregion
 
+//region Declations
 const accountStore = useAccountsStore();
-  const {add,remove} = accountStore;
-  let accountTypes = ['Локальная','LDAP']
-  const inputRefs = ref({});
+const {add,remove} = accountStore;
+let accountTypes = ['Локальная','LDAP']
+const inputRefs = ref({});
+//endregion
 
+//region Account Adding and Deletion
   function onClickAdd (){
     let newAccount: IAccount = {label:[] as LabelElement[] ,accountType:"",login:"",password:""} as IAccount;
     accountStore.add(newAccount);
   }
 
   function onClickRemove(index: number){
-    let account = accountStore.accounts.at(index) as IAccount;
+    let account = accountStore.accounts[index] as IAccount;
     accountStore.remove(account);
   }
+//endregion
 
-  const joinedLabel = ((label:LabelElement[]) =>{
-        return label.map(x=> x.text).join(';');
-      }
-  )
+//region Element reference registiration for inputs
   const registerRef = (index:number,
                        field:string,
                        el:any) => {
     const inputRef = `${index}${field}`;
     inputRefs.value[inputRef] = el;
   };
+//endregion
 
-
+//region Label formatting
+  const joinedLabel = ((label:LabelElement[]) =>{
+      return label.map(x=> x.text).join(';');
+    }
+  )
   function convertLabelToLabelElements(label:string){
     var result = label.split(';');
     return result.map(item=>  ({text : item} as LabelElement));
   }
+//endregion
 
+//region Validation and Set Value
   function completeValidation(account: IAccount,
                               el:any,
                               field:string,
@@ -117,7 +128,9 @@ const accountStore = useAccountsStore();
       el.$el.classList.add('border-danger');
     }
   }
+//endregion
 
+//region Input Handling
   function onInput(account : IAccount,
                    index:number,
                    field:string,
@@ -144,6 +157,7 @@ const accountStore = useAccountsStore();
         }
         completeValidation(account,el,field,validationResult,value);
   }
+  //endregion
 
 </script>
 
