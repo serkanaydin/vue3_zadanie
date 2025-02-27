@@ -5,10 +5,10 @@ export type LabelElement={
 }
 
 export interface IAccount extends Record<string, any>{
-    label: LabelElement[];
-    accountType: string;
-    login: string;
-    password: string;
+    label: LabelElement[] | null;
+    accountType: string | null;
+    login: string | null;
+    password: string | null;
 }
 
 export const useAccountsStore = defineStore('accounts', {
@@ -24,7 +24,7 @@ export const useAccountsStore = defineStore('accounts', {
         },
         mutate(account : IAccount,
                field:string,
-               value : LabelElement[] | string) {
+               value : LabelElement[] | string | null) {
                  this.accounts[this.accounts.indexOf(account)][`${field}`] = value;
         }
     },

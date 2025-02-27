@@ -142,18 +142,25 @@ const inputRefs = ref({});
         switch (field){
           case 'label':
             value= event.target.value;
-            validationResult = value.length <= 50;
+            validationResult = value?.length <= 50;
             break;
           case 'login':
             value= event.target.value;
-            validationResult = value.length <= 100;
+            validationResult = value?.length>0 && value?.length <= 100;
             break;
           case 'password':
             value= event.target.value;
-            validationResult = value.length <= 100; break;
+            if(account.accountType === 'Локальная'){
+              validationResult = value?.length>0 && value?.length <= 100;
+            }
+            else{
+              validationResult=true;
+            }
+            break;
           case 'accountType':
-            value = event.value;
-            validationResult = true; break;
+            value= event.value;
+            validationResult = true;
+            break;
         }
         completeValidation(account,el,field,validationResult,value);
   }
