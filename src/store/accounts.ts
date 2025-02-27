@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia';
 
+export type LabelElement={
+    text:string;
+}
+
 export interface IAccount {
-    label: string;
+    label: LabelElement[];
     accountType: string;
     login: string;
     password: string;
