@@ -19,7 +19,9 @@
           <InputText
               :ref="(el:any) => registerRef(index, 'label',el)"
               :value="joinedLabel(account.label)"
-              @input="onInput(account,index,'label',$event)"
+              @focusout="onInput(account,index,'label',$event)"
+              @focusin="previousValue=account.label"
+              @input = "account.label = convertLabelToLabelElements($event.target.value)"
               autofocus
               fluid
               style="height: 50px"/>
