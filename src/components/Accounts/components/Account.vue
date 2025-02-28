@@ -31,12 +31,13 @@
   </div>
   <div class="col-3" v-if="state.accountType !== 'LDAP'">
     <Password
-        :value="state.password"
+        v-model="state.password"
         @focusout="onPasswordChange()"
         toggleMask
         autofocus
         fluid
-        style="height:50px"/>
+        style="height:50px"
+        :input-class="v$.password.$error? 'border-danger' :''"/>
   </div>
   <div class="col-1">
     <Button icon="bi bi-trash" @click="onClickRemove(index)"/>
@@ -78,8 +79,9 @@ const rules ={
 
 const v$ = useVuelidate(rules, state)
 
-
-const accountTypes = ['Локальная','LDAP']
+const accountTypes = [
+    'Локальная',
+    'LDAP']
 const accountStore = useAccountsStore();
 const {remove} = accountStore;
 
@@ -93,6 +95,7 @@ const joinedLabel = ((label:LabelElement[]) =>{
       }
     }
 )
+
 function convertLabelToLabelElements(label:string){
   var result = label.split(';');
   return result.map(item=>  ({text : item} as LabelElement));
@@ -144,7 +147,6 @@ function onLoginChange() {
     let account = accountStore.accounts[index] as IAccount;
     accountStore.remove(account);
   }
-
 
 </script>
 <style scoped>
