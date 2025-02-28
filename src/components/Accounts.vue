@@ -38,8 +38,9 @@
         <div :class="account.accountType === 'LDAP'? 'col-6' : 'col-3'">
           <InputText
               :ref="(el:any) => registerRef(index, 'login',el)"
-              :value="account.login"
-              @input="onInput(account,index,'login',$event)"
+              v-model="account.login"
+              @focusout="onInput(account,index,'login',$event)"
+              @focusin="previousValue=account.login"
               autofocus
               fluid
               style="height: 50px"/>
@@ -48,7 +49,8 @@
             <Password
                 :ref="(el:any) => registerRef(index, 'password',el)"
                 :value="account.password"
-                @input="onInput(account,index,'password',$event)"
+                @focusout="onInput(account,index,'password',$event)"
+                @focusin="previousValue=account.password"
                 :required="account.accountType==='Локальная'"
                 toggleMask
                 autofocus
@@ -75,6 +77,8 @@ const accountStore = useAccountsStore();
 const {add,remove} = accountStore;
 let accountTypes = ['Локальная','LDAP']
 const inputRefs = ref({});
+let previousValue:any;
+let tempArray : [][];
 //endregion
 
 //region Account Adding and Deletion
@@ -135,6 +139,7 @@ const inputRefs = ref({});
     }
     else{
       el.$el.classList.add('border-danger');
+      accountStore.mutate(account, field,previousValue);
     }
   }
 //endregion
